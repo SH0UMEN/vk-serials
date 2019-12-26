@@ -1,18 +1,25 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="content">
+    <vue-plyr class="plyr-wrapper" ref="plyr">
+      <video src="video.mp4"></video>
+    </vue-plyr>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-  name: 'home',
-  components: {
-    HelloWorld
+  export default {
+    data() {
+      return {
+      }
+    },
+    computed: {
+      player() {
+        return this.$refs.plyr.player
+      }
+    },
   }
-}
 </script>
+
+<style lang="sass">
+  @import "../assets/sass/home"
+</style>

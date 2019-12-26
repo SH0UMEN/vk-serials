@@ -1,23 +1,11 @@
 <template>
-  <div id="app">
-    <vue-plyr ref="plyr">
-      <video src="video.mp4"></video>
-    </vue-plyr>
-  </div>
+  <main id="app">
+    <router-view>
+    </router-view>
+  </main>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-      }
-    },
-    computed: {
-      player() {
-        return this.$refs.plyr.player
-      }
-    },
-  }
 </script>
 
 <style lang="sass">
