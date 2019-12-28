@@ -3,11 +3,22 @@
     <div class="panel">
       <div class="panel-inner">
         <span class="title">{{ seriesTitle }}</span>
-        
+        <multiselect v-if="episodes"
+                     :allow-emply="true"
+                     :hide-selected="true"
+                     :searchable="false"
+                     label="label"
+                     @input="episodeChanged"
+                     :show-labels="false"
+                     v-model="currentEpisodeTemp"
+                     :options="episodesIndicesArray"
+                     trackBy="value"
+                     class="multiselect-custom">
+        </multiselect>
       </div>
     </div>
-    <vue-plyr class="plyr-wrapper" ref="plyr">
-      <video v-show="episodes" @loadeddata="volumeFix" :src="episodes[currentEpisode]['source']"></video>
+    <vue-plyr v-if="episodes" class="plyr-wrapper" ref="plyr">
+      <video @loadeddata="volumeFix" :src="episodes[currentEpisode]['source']"></video>
     </vue-plyr>
   </div>
 </template>
@@ -15,6 +26,7 @@
 <script>
   import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
   import axios from 'axios'
+  import Multiselect from 'vue-multiselect'
 
   export default {
     data() {
@@ -22,12 +34,15 @@
         currentSerialHash: this.getParamFromQuery("hash"),
         userID: this.getParamFromQuery("viewer_id"),
         episodes: null,
+        episodesIndicesArray: [],
         seriesTitle: "",
-        currentEpisode: 0
+        currentEpisode: 0,
+        currentEpisodeTemp: null
       }
     },
     components: {
-      PerfectScrollbar
+      PerfectScrollbar,
+      Multiselect
     },
     computed: {
       player() {
@@ -38,6 +53,15 @@
       this.getEpisode();
     },
     watch: {
+      episodes() {
+        for(let i in this.episodes) {
+          let newObj = {
+            label: `Серия ${parseInt(i)+1}`,
+            value: i
+          }
+          this.episodesIndicesArray.push(newObj);
+        }
+      },
       currentSerialHash: {
         handler: ()=>{
           this.getEpisode();
@@ -45,6 +69,10 @@
       }
     },
     methods: {
+      episodeChanged() {
+        this.currentEpisode = this.currentEpisodeTemp.value;
+        console.log(this.currentEpisode)
+      },
       volumeFix(){
         this.player.currentTime = this.player.currentTime;
       },
@@ -63,6 +91,10 @@
         axios.get(this.$store.state.API+`/?act=init&hash=${this.currentSerialHash}&user_id=${this.userID}`).then((res)=>{
           let data = res.data;
           this.episodes = data["season"];
+          this.currentEpisodeTemp = {
+            label: `Серия ${parseInt(data["current_seria"])+1}`,
+            value: data["current_seria"]
+          };
           this.currentEpisode = data["current_seria"];
           this.seriesTitle = data["name"]
         });
@@ -74,4 +106,5 @@
 <style lang="sass">
   @import "~vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css"
   @import "../assets/sass/home"
+  @import "~vue-multiselect/dist/vue-multiselect.min.css"
 </style>
