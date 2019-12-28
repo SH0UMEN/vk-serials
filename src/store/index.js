@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    API: "/vidos/api"
   },
   mutations: {
   },

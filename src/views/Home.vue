@@ -1,24 +1,29 @@
 <template>
   <div class="content">
+    <div class="panel">
+      <div class="panel-inner">
+        <span class="title">{{ seriesTitle }}</span>
+        
+      </div>
+    </div>
     <vue-plyr class="plyr-wrapper" ref="plyr">
-      <video @loadeddata="volumeFix" src="video.mp4"></video>
+      <video v-show="episodes" @loadeddata="volumeFix" :src="episodes[currentEpisode]['source']"></video>
     </vue-plyr>
-    <perfect-scrollbar class="playlist">
-      <a href="#">Серия 1</a>
-      <a href="#">Серия 2</a>
-      <a href="#">Серия 3</a>
-    </perfect-scrollbar>
   </div>
 </template>
 
 <script>
   import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+  import axios from 'axios'
 
   export default {
     data() {
       return {
         currentSerialHash: this.getParamFromQuery("hash"),
-        userID: this.getParamFromQuery("viewer_id")
+        userID: this.getParamFromQuery("viewer_id"),
+        episodes: null,
+        seriesTitle: "",
+        currentEpisode: 0
       }
     },
     components: {
@@ -30,7 +35,14 @@
       }
     },
     mounted() {
-      alert(this.currentSerialHash + " " + this.userID);
+      this.getEpisode();
+    },
+    watch: {
+      currentSerialHash: {
+        handler: ()=>{
+          this.getEpisode();
+        }
+      }
     },
     methods: {
       volumeFix(){
@@ -46,6 +58,14 @@
             return pSplitted[1];
           }
         }
+      },
+      getEpisode() {
+        axios.get(this.$store.state.API+`/?act=init&hash=${this.currentSerialHash}&user_id=${this.userID}`).then((res)=>{
+          let data = res.data;
+          this.episodes = data["season"];
+          this.currentEpisode = data["current_seria"];
+          this.seriesTitle = data["name"]
+        });
       }
     }
   }
