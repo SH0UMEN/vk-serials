@@ -1,8 +1,21 @@
 .content
     height: 100%
+    display: flex
+    flex-direction: column
+
+    .playlist
+        min-height: 70px
+        flex-shrink: 2
+
+    .k
+        height: 100%
 
     .plyr, .plyr-wrapper
         height: 100%
+
+    .plyr-wrapper
+        flex-shrink: 0
+        height: calc(100% - 70px)
 
     .plyr
         .plyr__video-wrapper

@@ -8,7 +8,10 @@ Vue.config.productionTip = false;
 
 Vue.use(VuePlyr, {
   plyr: {
-    fullscreen: { enabled: false }
+    fullscreen: { enabled: true },
+    options: [
+        "volume"
+    ]
   },
   emit: ['ended']
 });

@@ -10,10 +10,10 @@ const routes = [
     name: 'home',
     component: Home
   },
-]
+];
 
 const router = new VueRouter({
   routes
-})
+});
 
 export default router
