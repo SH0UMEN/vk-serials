@@ -4,6 +4,11 @@
     flex-direction: column
 
     .panel
+        position: fixed
+        top: 0
+        left: 0
+        z-index: 1
+        right: 0
         background-color: black
         min-height: 50px
         color: white
@@ -13,27 +18,53 @@
         align-items: center
 
         .panel-inner
+            width: 100%
+            justify-content: flex-start
             align-items: center
             display: flex
 
             .title
-                font-size: 20px
+                font-size: 14px
+                white-space: nowrap
 
             .multiselect-custom
                 cursor: pointer
+                display: inline-block
+                margin-left: 15px
+                min-height: 36px
+                width: auto
+
+                .multiselect__option
+                    min-height: 36px
+                    padding:
+                        top: 9px
+                        bottom: 9px
+                        left: 11px
+                    font-size: 14px
 
                 .multiselect__option--highlight
                     background-color: rgba(0,179, 255, .8)
 
-    .k
-        height: 100%
+                .multiselect__select
+                    top: 0
+
+                .multiselect__select:before
+                    border-color: rgba(0,179, 255, .8) transparent transparent
+
+                .multiselect__tags
+                    min-height: 30px
+                    padding-top: 6px
+                    white-space: nowrap
+
+                    .multiselect__single
+                        font-size: 14px
 
     .plyr, .plyr-wrapper
         height: 100%
 
     .plyr-wrapper
         flex-shrink: 0
-        height: calc(100% - 50px)
+        height: calc(100%)
 
     .plyr
         .plyr__video-wrapper
