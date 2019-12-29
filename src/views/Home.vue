@@ -28,7 +28,7 @@
         </multiselect>
       </div>
     </div>
-    <video-player v-if="currentEpisode" :options="playerOptions" :playsinline="true" class="plyr-wrapper" ref="plyr">
+    <video-player v-if="currentEpisode" :options="playerOptions" :playsinline="true" class="video-player" ref="player">
     </video-player>
   </div>
 </template>
@@ -50,10 +50,9 @@
         seasons: [],
         seasonsArray: [],
         playerOptions: {
-          height: '360',
           autoplay: true,
-          muted: true,
-          language: 'en',
+          controls: true,
+          language: 'ru',
           playbackRates: [0.7, 1.0, 1.5, 2.0],
           sources: [],
         }
@@ -86,8 +85,19 @@
       },
       episodeChanged() {
         this.currentSerialHash = this.currentEpisode.hash;
-        vkuiConnect.send("VKWebAppSetLocation", {"location": this.currentSerialHash})
+        vkuiConnect.send("VKWebAppSetLocation", {"location": this.currentSerialHash});
+        this.setCurrentVideo();
       },
+
+      setCurrentVideo() {
+        this.playerOptions.sources.pop();
+        this.playerOptions.sources.push({
+          type: "video/mp4",
+          // mp4
+          src: this.currentEpisode.source,
+        })
+      },
+
       seasonChanged() {
         this.currentEpisode = this.currentSeason.series[0];
         this.episodeChanged();
@@ -116,14 +126,7 @@
           this.seasons = res.data.seasons;
           this.currentSeason = this.seasons[res.data.current_season];
           this.currentEpisode = this.currentSeason.series[res.data.current_seria];
-          this.playerOptions.sources.push({
-            type: "video/mp4",
-            // mp4
-            src: this.currentEpisode.source,
-          })
-          /*for(let s in this.seasons) {
-            this.seasonsArray.push(this.seasons[s]);
-          }*/
+          this.setCurrentVideo();
           this.seriesTitle = res.data.name;
         });
       }
