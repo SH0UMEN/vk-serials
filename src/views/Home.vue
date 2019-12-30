@@ -50,9 +50,23 @@
         seasons: [],
         seasonsArray: [],
         playerOptions: {
-          autoplay: true,
+          autoplay: false,
           controls: true,
           language: 'ru',
+          userActions: {
+            hotkeys(event) {
+              // `this` is the player in this context
+
+              // `x` key = pause
+              if (event.which === 88) {
+                this.player.pause();
+              }
+              // `y` key = play
+              if (event.which === 89) {
+                this.player.play();
+              }
+            }
+          },
           playbackRates: [0.7, 1.0, 1.5, 2.0],
           sources: [],
         }
@@ -65,12 +79,12 @@
     },
     computed: {
       player() {
-        return this.$refs.plyr.player
+        return this.$refs.player
       }
     },
     mounted() {
       this.getEpisode();
-      setInterval(this.sentProgress, 1600);
+      //setInterval(this.sentProgress, 1600);
     },
     watch: {
       currentSerialHash() {
