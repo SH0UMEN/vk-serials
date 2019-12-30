@@ -73,6 +73,40 @@
 
     .video-player-wrapper
         height: 100%
+        position: relative
+
+        .speed-control
+            position: absolute
+            right: 25px
+            color: white
+            height: 0
+            top: 50%
+            z-index: 1
+            display: flex
+            align-items: center
+
+            .speed-control-inner
+                display: flex
+                align-items: center
+                flex-direction: column
+
+                .speed-control-button
+                    background-color: transparent
+                    border: 2px solid white
+                    border-radius: 50%
+                    color: white
+                    outline: none
+                    cursor: pointer
+                    width: 35px
+                    height: 35px
+                    font-size: 20px
+                    display: flex
+                    align-items: center
+                    justify-content: center
+
+                .speed-value
+                    margin-top: 8px
+                    margin-bottom: 8px
 
         .video-player
             outline: none

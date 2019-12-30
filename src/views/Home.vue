@@ -36,6 +36,19 @@
     </div>
 
     <div v-if="userID && currentSerialHash" class="video-player-wrapper">
+        <div class="speed-control">
+            <div class="speed-control-inner">
+                <button class="speed-control-button speed-up"
+                        @click="increaceSpeed">
+                    +
+                </button>
+                <span class="speed-value">{{ playback }}</span>
+                <button class="speed-control-button speed-down"
+                        @click="decreaseSpeed">
+                    -
+                </button>
+            </div>
+        </div>
         <video v-if="currentEpisode"
                class="video-player"
                ref="player"
@@ -65,7 +78,8 @@
         currentSeason: null,
         currentEpisode: null,
         seasons: [],
-        playerIsPlaying: false
+        playerIsPlaying: false,
+        playback: 1
       }
     },
     components: {
@@ -85,6 +99,9 @@
     watch: {
       currentSerialHash() {
         this.getEpisode();
+      },
+      playback(val) {
+        this.player.playbackRate = val;
       }
     },
     methods: {
@@ -117,6 +134,16 @@
           if(pSplitted[0] == param) {
             return pSplitted[1];
           }
+        }
+      },
+      increaceSpeed() {
+        if(this.playback < 2) {
+            this.playback+=0.25;
+        }
+      },
+      decreaseSpeed() {
+        if(this.playback > 0.25) {
+            this.playback-=0.25;
         }
       },
       getEpisode() {
