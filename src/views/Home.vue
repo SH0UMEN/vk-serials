@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="panel">
+    <div v-if="userID && currentSerialHash" class="panel">
       <div class="panel-inner">
         <span class="title">{{ seriesTitle }}</span>
         <multiselect :allow-empty="false"
@@ -21,15 +21,31 @@
                      @input="episodeChanged"
                      :show-labels="false"
                      v-model="currentEpisode"
-                     :options="currentSeason.series"
+                     :options="currentSeason.episodes"
                      trackBy="id"
                      :preselect-first="true"
                      class="multiselect-custom">
         </multiselect>
       </div>
     </div>
-    <video-player v-if="currentEpisode" :options="playerOptions" :playsinline="true" class="video-player" ref="player">
-    </video-player>
+
+    <div class="errors" v-else>
+        <span class="error">
+            Произошла непредвиденная ошибка. Повторите попытку позже
+        </span>
+    </div>
+
+    <div v-if="userID && currentSerialHash" class="video-player-wrapper">
+        <video v-if="currentEpisode"
+               class="video-player"
+               ref="player"
+               :src="currentEpisode.source"
+               controls
+               @loadeddata="volumeFix"
+               @play="playerIsPlaying = true"
+               @pause="playerIsPlaying = false">
+        </video>
+    </div>
   </div>
 </template>
 
@@ -48,28 +64,7 @@
         currentSeason: null,
         currentEpisode: null,
         seasons: [],
-        seasonsArray: [],
-        playerOptions: {
-          autoplay: false,
-          controls: true,
-          language: 'ru',
-          userActions: {
-            hotkeys(event) {
-              // `this` is the player in this context
-
-              // `x` key = pause
-              if (event.which === 88) {
-                this.player.pause();
-              }
-              // `y` key = play
-              if (event.which === 89) {
-                this.player.play();
-              }
-            }
-          },
-          playbackRates: [0.7, 1.0, 1.5, 2.0],
-          sources: [],
-        }
+        playerIsPlaying: false
       }
     },
     components: {
@@ -84,7 +79,7 @@
     },
     mounted() {
       this.getEpisode();
-      //setInterval(this.sentProgress, 1600);
+      setInterval(this.sentProgress, 1600);
     },
     watch: {
       currentSerialHash() {
@@ -93,27 +88,16 @@
     },
     methods: {
       sentProgress() {
-        if(this.player.playing) {
+        if(this.playerIsPlaying) {
           axios.get(this.$store.state.API+`/?act=set_current_time&current_time=${this.player.currentTime}&hash=${this.currentSerialHash}&user_id=${this.userID}`)
         }
       },
       episodeChanged() {
         this.currentSerialHash = this.currentEpisode.hash;
         vkuiConnect.send("VKWebAppSetLocation", {"location": this.currentSerialHash});
-        this.setCurrentVideo();
       },
-
-      setCurrentVideo() {
-        this.playerOptions.sources.pop();
-        this.playerOptions.sources.push({
-          type: "video/mp4",
-          // mp4
-          src: this.currentEpisode.source,
-        })
-      },
-
       seasonChanged() {
-        this.currentEpisode = this.currentSeason.series[0];
+        this.currentEpisode = this.currentSeason.episodes[0];
         this.episodeChanged();
       },
       volumeFix(){
@@ -139,8 +123,7 @@
           let data = res.data;
           this.seasons = res.data.seasons;
           this.currentSeason = this.seasons[res.data.current_season];
-          this.currentEpisode = this.currentSeason.series[res.data.current_seria];
-          this.setCurrentVideo();
+          this.currentEpisode = this.currentSeason.episodes[res.data.current_episode];
           this.seriesTitle = res.data.name;
         });
       }
