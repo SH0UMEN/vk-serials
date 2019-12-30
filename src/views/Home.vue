@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div v-if="userID && currentSerialHash" class="panel">
+    <div v-if="userID && currentSerialHash && !errors" class="panel">
       <div class="panel-inner">
         <span class="title">{{ seriesTitle }}</span>
         <multiselect :allow-empty="false"
@@ -35,7 +35,7 @@
         </span>
     </div>
 
-    <div v-if="userID && currentSerialHash" class="video-player-wrapper">
+    <div v-if="userID && currentSerialHash && !errors" class="video-player-wrapper">
         <div class="speed-control">
             <div class="speed-control-inner">
                 <button class="speed-control-button speed-up"
@@ -79,7 +79,8 @@
         currentEpisode: null,
         seasons: [],
         playerIsPlaying: false,
-        playback: 1
+        playback: 1,
+        errors: false
       }
     },
     components: {
@@ -149,10 +150,14 @@
       getEpisode() {
         axios.get(this.$store.state.API+`/?act=init&hash=${this.currentSerialHash}&user_id=${this.userID}`).then((res)=>{
           let data = res.data;
-          this.seasons = res.data.seasons;
-          this.currentSeason = this.seasons[res.data.current_season];
-          this.currentEpisode = this.currentSeason.episodes[res.data.current_episode];
-          this.seriesTitle = res.data.name;
+          if(typeof data == "object") {
+              this.seasons = res.data.seasons;
+              this.currentSeason = this.seasons[res.data.current_season];
+              this.currentEpisode = this.currentSeason.episodes[res.data.current_episode];
+              this.seriesTitle = res.data.name;
+          } else {
+              this.errors = true;
+          }
         });
       }
     }
