@@ -43,7 +43,8 @@
                controls
                @loadeddata="volumeFix"
                @play="playerIsPlaying = true"
-               @pause="playerIsPlaying = false">
+               @pause="playerIsPlaying = false"
+               controlsList="nodownload">
         </video>
     </div>
   </div>
