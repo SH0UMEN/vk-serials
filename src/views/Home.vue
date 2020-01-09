@@ -67,7 +67,6 @@
     import {PerfectScrollbar} from 'vue2-perfect-scrollbar'
     import axios from 'axios'
     import Multiselect from 'vue-multiselect'
-    import {videoPlayer} from 'vue-video-player'
 
     export default {
         data() {
@@ -88,7 +87,6 @@
         components: {
             PerfectScrollbar,
             Multiselect,
-            videoPlayer
         },
         computed: {
             player() {
@@ -178,5 +176,4 @@
     //@import "~vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css"
     @import "../assets/sass/home"
     @import "~vue-multiselect/dist/vue-multiselect.min.css"
-    @import "~video.js/dist/video-js.css"
 </style>

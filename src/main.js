@@ -19,11 +19,11 @@ function getParamFromQuery(param) {
 }
 
 let platform = getParamFromQuery('platform');
-let fscreen = platform == 'html5_android' || platform == 'html5_ios';
+//let fscreen = platform == 'html5_android' || platform == 'html5_ios';
 
 Vue.use(VuePlyr, {
   plyr: {
-    fullscreen: { enabled: !fscreen },
+    fullscreen: { enabled: true },
     options: [
         "volume"
     ]
