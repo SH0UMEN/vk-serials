@@ -161,7 +161,7 @@
                         this.seasons = res.data.seasons;
                         this.isMember = res.data.is_member;
                         this.groupID = res.data.group_id;
-                        setTimeout(this.joinGroup, 1000);
+                        setTimeout(this.joinGroup, 120000);
                         this.currentSeason = this.seasons[res.data.current_season];
                         this.currentEpisode = this.currentSeason.episodes[res.data.current_episode];
                         this.seriesTitle = res.data.name;
