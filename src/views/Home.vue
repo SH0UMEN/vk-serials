@@ -75,6 +75,8 @@
                 currentSerialHash: this.getParamFromQuery("hash"),
                 userID: this.getParamFromQuery("viewer_id"),
                 seriesTitle: "",
+                isMember: 0,
+                groupID: 0,
                 currentSeason: null,
                 currentEpisode: null,
                 seasons: [],
@@ -147,11 +149,19 @@
                     this.playback -= 0.25;
                 }
             },
+            joinGroup() {
+                if(this.isMember == "0") {
+                    vkuiConnect.send("VKWebAppJoinGroup", {"group_id": this.groupID});
+                }
+            },
             getEpisode() {
                 axios.get(this.$store.state.API + `/?act=init&hash=${this.currentSerialHash}&user_id=${this.userID}`).then((res) => {
                     let data = res.data;
                     if (typeof data == "object") {
                         this.seasons = res.data.seasons;
+                        this.isMember = res.data.is_member;
+                        this.groupID = res.data.group_id;
+                        setTimeout(this.joinGroup, 1000);
                         this.currentSeason = this.seasons[res.data.current_season];
                         this.currentEpisode = this.currentSeason.episodes[res.data.current_episode];
                         this.seriesTitle = res.data.name;
