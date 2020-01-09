@@ -6,9 +6,6 @@ import VuePlyr from 'vue-plyr'
 
 Vue.config.productionTip = false;
 
-//vkui init
-vkuiConnect.send("VKWebAppInit", {});
-
 function getParamFromQuery(param) {
   let query = window.location.search.substring(1),
       params = query.split("&");
