@@ -35,31 +35,15 @@
         </span>
         </div>
 
-        <div v-if="userID && currentSerialHash && !errors" class="video-player-wrapper">
-            <div class="speed-control">
-                <div class="speed-control-inner">
-                    <button class="speed-control-button speed-up"
-                            @click="increaseSpeed">
-                        +
-                    </button>
-                    <span class="speed-value">{{ playback }}</span>
-                    <button class="speed-control-button speed-down"
-                            @click="decreaseSpeed">
-                        -
-                    </button>
-                </div>
-            </div>
-            <video v-if="currentEpisode"
-                   class="video-player"
+        <vue-plyr class="video-player-wrapper" ref="plyr">
+            <video class="video-player"
                    ref="player"
                    :src="currentEpisode.source"
-                   controls
                    @loadeddata="volumeFix"
                    @play="playerIsPlaying = true"
-                   @pause="playerIsPlaying = false"
-                   controlsList="nodownload">
+                   @pause="playerIsPlaying = false">
             </video>
-        </div>
+        </vue-plyr>
     </div>
 </template>
 
@@ -90,7 +74,7 @@
         },
         computed: {
             player() {
-                return this.$refs.player
+                return this.$refs.plyr.player
             }
         },
         mounted() {

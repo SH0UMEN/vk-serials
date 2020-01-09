@@ -6,7 +6,7 @@ import VuePlyr from 'vue-plyr'
 
 Vue.config.productionTip = false;
 
-function getParamFromQuery(param) {
+/*function getParamFromQuery(param) {
   let query = window.location.search.substring(1),
       params = query.split("&");
 
@@ -16,9 +16,9 @@ function getParamFromQuery(param) {
       return pSplitted[1];
     }
   }
-}
+}*/
 
-let platform = getParamFromQuery('platform');
+//let platform = getParamFromQuery('platform');
 //let fscreen = platform == 'html5_android' || platform == 'html5_ios';
 
 Vue.use(VuePlyr, {

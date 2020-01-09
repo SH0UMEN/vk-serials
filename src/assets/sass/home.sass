@@ -75,51 +75,11 @@
         height: 100%
         position: relative
 
-        .speed-control
-            position: absolute
-            color: white
-            height: 0
-            top: 50%
-            z-index: 1
-            right: 10px
-            display: flex
-            align-items: center
+        .plyr
+            height: 100%
 
-            .speed-control-inner
-                display: flex
-                align-items: center
-                flex-direction: column
-                position: relative
-
-                &:after
-                    display: block
-                    position: absolute
-                    content: ""
-                    background: radial-gradient(black 5%, transparent 60%)
-                    height: 250px
-                    width: 200px
-                    z-index: -1
-                    top: -75px
-                    left: -50px
-
-                .speed-control-button
-                    background-color: transparent
-                    border: 2px solid white
-                    border-radius: 50%
-                    color: white
-                    outline: none
-                    cursor: pointer
-                    width: 30px
-                    height: 30px
-                    font-size: 17px
-                    display: flex
-                    align-items: center
-                    justify-content: center
-
-                .speed-value
-                    margin-top: 8px
-                    margin-bottom: 8px
-                    font-size: 14px
+            .plyr__video-wrapper
+                height: 100%
 
         .video-player
             outline: none
