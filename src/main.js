@@ -26,7 +26,8 @@ Vue.use(VuePlyr, {
     fullscreen: { enabled: true },
     options: [
         "volume"
-    ]
+    ],
+    disableContextMenu: false
   },
   emit: ['ended']
 });

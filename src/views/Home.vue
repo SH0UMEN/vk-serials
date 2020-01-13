@@ -12,6 +12,7 @@
                              v-model="currentSeason"
                              @input="seasonChanged"
                              :preselect-first="true"
+                             maxHeight="200"
                              class="multiselect-custom">
                 </multiselect>
                 <multiselect v-if="currentSeason"
@@ -23,6 +24,7 @@
                              v-model="currentEpisode"
                              :options="currentSeason.episodes"
                              trackBy="id"
+                             maxHeight="200"
                              :preselect-first="true"
                              class="multiselect-custom">
                 </multiselect>
