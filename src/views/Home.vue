@@ -12,7 +12,7 @@
                              v-model="currentSeason"
                              @input="seasonChanged"
                              :preselect-first="true"
-                             maxHeight="200"
+                             :maxHeight="200"
                              class="multiselect-custom">
                 </multiselect>
                 <multiselect v-if="currentSeason"
@@ -24,7 +24,7 @@
                              v-model="currentEpisode"
                              :options="currentSeason.episodes"
                              trackBy="id"
-                             maxHeight="200"
+                             :maxHeight="200"
                              :preselect-first="true"
                              class="multiselect-custom">
                 </multiselect>
@@ -67,6 +67,7 @@
                 seasons: [],
                 playerIsPlaying: false,
                 playback: 1,
+                currentTime: 0,
                 errors: false
             }
         },
@@ -81,7 +82,7 @@
         },
         mounted() {
             this.getEpisode();
-            setInterval(this.sentProgress, 1600);
+            setInterval(this.sendProgress, 1600);
         },
         watch: {
             currentSerialHash() {
@@ -92,9 +93,11 @@
             }
         },
         methods: {
-            sentProgress() {
-                if (this.playerIsPlaying) {
+            sendProgress() {
+                let ct = this.player.currentTime;
+                if(ct > this.currentTime) {
                     axios.get(this.$store.state.API + `/?act=set_current_time&current_time=${this.player.currentTime}&hash=${this.currentSerialHash}&user_id=${this.userID}`)
+                    this.currentTime = ct;
                 }
             },
             episodeChanged() {
