@@ -95,7 +95,7 @@
         methods: {
             sendProgress() {
                 let ct = this.player.currentTime;
-                if(ct > this.currentTime) {
+                if(ct != this.currentTime) {
                     axios.get(this.$store.state.API + `/?act=set_current_time&current_time=${this.player.currentTime}&hash=${this.currentSerialHash}&user_id=${this.userID}`)
                     this.currentTime = ct;
                 }
